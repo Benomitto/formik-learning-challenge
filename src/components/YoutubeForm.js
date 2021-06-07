@@ -40,20 +40,32 @@ function YoutubeForm(){
 		validate 
 	})
 	
-	
+	console.log("Visited ",formik.touched);
 	return(
 	
 	<div>
 	
 	<form onSubmit={formik.handleSubmit}>
+		<div className='form-control'>
 		<label htmlFor="name" >Name</label>
-		<input type="text" id="name" name="name" onChange={formik.handleChange} value={formik.values.name}/>
+		<input type="text" id="name" name="name" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.name}/>
+		{formik.touched.name && formik.errors.name ? <div className="error">{formik.errors.name}</div>:null} {/*If name exist ,render null otherwise if it doesn't exist
+		display the error*/}
+		</div>
 		
+		<div className='form-control'>
 		<label htmlFor="name" >E-mail</label>
-		<input type="text" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}/>
+		<input type="text" id="email" name="email" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.email}/>
+		{formik.touched.name && formik.errors.email ? <div className="error">{formik.errors.email}</div>:null} {/*If email exist ,render null otherwise if it doesn't exist
+		display the error*/}
+		</div>
 		
+		<div className='form-control'>
 		<label htmlFor="channel" >Name</label>
-		<input type="text" id="channel" name="channel" onChange={formik.handleChange} value={formik.values.channel}/>
+		<input type="text" id="channel" name="channel" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.channel}/>
+		{formik.touched.name && formik.errors.channel ? <div className="error">{formik.errors.channel}</div>:null} {/*If channel exist ,render null otherwise if it doesn't exist
+		display the error*/}
+		</div>
 		
 		<button>Submit</button>
 	</form>
