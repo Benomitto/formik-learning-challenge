@@ -26,8 +26,16 @@ const onSubmit = values => {
 const validationSchema = Yup.object({
 	name:Yup.string().required("Required!"),
 	email:Yup.string().email("Invalid email format").required("Required"),
-	channel:Yup.string().required("Required")
+	channel:Yup.string().required("Required"),
 })
+
+const validateComments = value => {
+	let error
+	if(!value){
+		error = 'Required'
+	}
+	return error
+}
 		
 function YoutubeForm(){
 
@@ -35,10 +43,12 @@ function YoutubeForm(){
 	//console.log("Visited ",formik.touched);
 	return(
 	
-	<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} validateOnChange={false}
-	validateOnBulr={false}>
-	
-	<Form >
+	<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} >
+		{formik=>{
+			console.log('formik props',formik);
+			return(
+			
+				<Form >
 		<div className='form-control'>
 		<label htmlFor="name" >Name</label>
 		<Field type="text" id="name" name="name" />
@@ -59,7 +69,8 @@ function YoutubeForm(){
 		
 		<div className='form-control'>
 		<label htmlFor='comments'>Comments</label>
-		<Field as='textarea' id='comments' name='comments' />
+		<Field as='textarea' id='comments' name='comments' validate={validateComments}/>
+		<ErrorMessage name='comments' component={TextError}/>
 		</div>
 		
 		<div className='form-control'>
@@ -120,9 +131,19 @@ function YoutubeForm(){
 		</FieldArray>
 		</div>
 
+		<button type='button' onClick={()=> formik.validateField('comments')} >Validate comments</button>
+		<button type='button' onClick={()=>formik.validateForm()} >Validate all</button>
+		
+		<button type='button' onClick={()=> formik.setFieldTouched('comments')} >Visit comments</button>
+		<button type='button' onClick={()=>formik.setTouched({name:true,email:true,channel:true,comments:true})} >Visit Fields</button>
 		
 		<button>Submit</button>
 	</Form>
+			
+			)
+		}}
+	
+	
 	
 	</Formik>
 	
