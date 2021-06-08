@@ -1,5 +1,5 @@
 import React from 'react'
-import {Formik,Form,Field,ErrorMessage} from 'formik'
+import {Formik,Form,Field,ErrorMessage,FieldArray} from 'formik'
 import * as Yup from 'yup'
 import TextError from './TextError'
 
@@ -8,7 +8,14 @@ const initialValues = {
 			email:'',
 			channel:'',
 			comments:'',
-			address:''
+			address:'',
+			social:{
+				facebook:'',
+				twitter:''
+			},
+			phoneNumber:['',''],
+			phNumbers:['']
+			
 		}
 		
 const onSubmit = values => {
@@ -44,7 +51,7 @@ function YoutubeForm(){
 		</div>
 		
 		<div className='form-control'>
-		<label htmlFor="channel" >Name</label>
+		<label htmlFor="channel" >Channel</label>
 		<Field type="text" id="channel" name="channel" />
 		<ErrorMessage name='channel' component={TextError}/> 
 		</div>
@@ -57,12 +64,32 @@ function YoutubeForm(){
 		<div className='form-control'>
 		<label htmlFor='address'>Address</label>
 		<Field as='textarea' id='address' name='address' >{(props)=>{
-			const {field,form,meta} = props
+			const {field,meta} = props
 
 			return(<div><input type='text' id='address' {...field}/>
 				{meta.touched && meta.error ? <div>{meta.error}</div>:null}
 					</div>)
 		}}</Field>
+		</div>
+		
+		<div className='form-control'>
+		<label htmlFor='facebook'> Facebook Profile</label>
+		<Field type='text' id='facebook' name='social.facebook'/>
+		</div>
+		
+		<div className='form-control'>
+		<label htmlFor='twitter'> Twitter Profile</label>
+		<Field type='text' id='twitter' name='social.twitter'/>
+		</div>
+		
+		<div className='form-control'>
+		<label htmlFor='primaryPh'> Primary phone number</label>
+		<Field type='text' id='primaryPh' name='phomeNumbers[0]'/>
+		</div>
+		
+		<div className='form-control'>
+		<label htmlFor='secondaryPh'> Secondary phone number</label>
+		<Field type='text' id='secondaryPh' name='phomeNumbers[1]'/>
 		</div>
 		
 		<button>Submit</button>
