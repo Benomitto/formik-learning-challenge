@@ -1,5 +1,5 @@
 import React from 'react'
-import {Formik,Form,Field,ErrorMessage,FieldArray} from 'formik'
+import {Formik,Form,Field,ErrorMessage,FieldArray,FastField} from 'formik'
 import * as Yup from 'yup'
 import TextError from './TextError'
 
@@ -35,7 +35,8 @@ function YoutubeForm(){
 	//console.log("Visited ",formik.touched);
 	return(
 	
-	<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+	<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} validateOnChange={false}
+	validateOnBulr={false}>
 	
 	<Form >
 		<div className='form-control'>
@@ -63,13 +64,15 @@ function YoutubeForm(){
 		
 		<div className='form-control'>
 		<label htmlFor='address'>Address</label>
-		<Field as='textarea' id='address' name='address' >{(props)=>{
+		<FastField as='textarea' id='address' name='address' >
+		{(props)=>{
+			console.log('Field render');
 			const {field,meta} = props
 
 			return(<div><input type='text' id='address' {...field}/>
 				{meta.touched && meta.error ? <div>{meta.error}</div>:null}
 					</div>)
-		}}</Field>
+		}}</FastField>
 		</div>
 		
 		<div className='form-control'>
@@ -96,7 +99,7 @@ function YoutubeForm(){
 		<label htmlFor=''>List of Phone Numbers</label>
 		<FieldArray type='text' id='secondaryPh' name='phNumbers'>
 		{(fieldArrayProps)=>{
-			console.log("FieldArrayProps",fieldArrayProps);
+			
 			const {push,remove,form} = fieldArrayProps
 			const {values} = form
 			const {phNumbers} = values
@@ -104,8 +107,13 @@ function YoutubeForm(){
 				phNumbers.map((phNumbers,index)=>(
 				<div key={index}>
 				<Field name={`phNumbers[${index}]`}/>
-				<button type="button" onClick={()=>remove(index)}>-</button>
-				<button type="button" onClick={()=>push('')}>+</button>
+				{
+					index > 0 && (
+					<button type="button" onClick={()=>remove(index)}>{''}-{''}</button>
+					)
+				}
+				
+				<button type="button" onClick={()=>push('')}>{''}+{''}</button>
 				</div>))
 			}</div>)
 		}}
