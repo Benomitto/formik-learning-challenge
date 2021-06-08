@@ -84,13 +84,34 @@ function YoutubeForm(){
 		
 		<div className='form-control'>
 		<label htmlFor='primaryPh'> Primary phone number</label>
-		<Field type='text' id='primaryPh' name='phomeNumbers[0]'/>
+		<Field type='text' id='primaryPh' name='phoneNumbers[0]'/>
 		</div>
 		
 		<div className='form-control'>
 		<label htmlFor='secondaryPh'> Secondary phone number</label>
-		<Field type='text' id='secondaryPh' name='phomeNumbers[1]'/>
+		<Field type='text' id='secondaryPh' name='phoneNumbers[1]'/>
 		</div>
+		
+		<div className='form-control'>
+		<label htmlFor=''>List of Phone Numbers</label>
+		<FieldArray type='text' id='secondaryPh' name='phNumbers'>
+		{(fieldArrayProps)=>{
+			console.log("FieldArrayProps",fieldArrayProps);
+			const {push,remove,form} = fieldArrayProps
+			const {values} = form
+			const {phNumbers} = values
+			return(<div>{
+				phNumbers.map((phNumbers,index)=>(
+				<div key={index}>
+				<Field name={`phNumbers[${index}]`}/>
+				<button type="button" onClick={()=>remove(index)}>-</button>
+				<button type="button" onClick={()=>push('')}>+</button>
+				</div>))
+			}</div>)
+		}}
+		</FieldArray>
+		</div>
+
 		
 		<button>Submit</button>
 	</Form>
