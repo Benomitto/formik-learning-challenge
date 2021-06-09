@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {Formik,Form,Field,ErrorMessage,FieldArray,FastField} from 'formik'
 import * as Yup from 'yup'
 import TextError from './TextError'
@@ -18,8 +18,26 @@ const initialValues = {
 			
 		}
 		
-const onSubmit = values => {
+const savedValues = {
+			name:'ben',
+			email:'b@gmail.com',
+			channel:'bbb123',
+			comments:'asf',
+			address:'24b streeth 4th',
+			social:{
+				facebook:'',
+				twitter:''
+			},
+			phoneNumber:['',''],
+			phNumbers:['']
+			
+		}
+		
+const onSubmit = (values,onSubmitProps) => {
 			console.log("Formik data",values);
+			console.log("Submit props",onSubmitProps);
+			onSubmitProps.isSubmitting(false);
+			onSubmitProps.resetForm();
 		}
 
 		
@@ -39,11 +57,12 @@ const validateComments = value => {
 		
 function YoutubeForm(){
 
-	
+	const[formValues,setFormValues] = useState()
 	//console.log("Visited ",formik.touched);
 	return(
 	
-	<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} >
+	<Formik initialValues={formValues || initialValues} validationSchema={validationSchema} onSubmit={onSubmit} validateOnMount 
+	enableReinitialize>
 		{formik=>{
 			console.log('formik props',formik);
 			return(
@@ -131,13 +150,15 @@ function YoutubeForm(){
 		</FieldArray>
 		</div>
 
-		<button type='button' onClick={()=> formik.validateField('comments')} >Validate comments</button>
+		/*<button type='button' onClick={()=> formik.validateField('comments')} >Validate comments</button>
 		<button type='button' onClick={()=>formik.validateForm()} >Validate all</button>
 		
 		<button type='button' onClick={()=> formik.setFieldTouched('comments')} >Visit comments</button>
 		<button type='button' onClick={()=>formik.setTouched({name:true,email:true,channel:true,comments:true})} >Visit Fields</button>
-		
-		<button>Submit</button>
+		*/
+		<button type='button' onClick={()=> setFormValues(savedValues)}>Load data</button>
+		<button type='reset'>Reset</button>
+		<button type='button' disabled={!formik.isValid || formik.isSubmitting}>Submit</button>
 	</Form>
 			
 			)
